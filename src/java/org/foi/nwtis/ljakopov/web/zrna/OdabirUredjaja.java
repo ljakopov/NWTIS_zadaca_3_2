@@ -5,22 +5,29 @@
  */
 package org.foi.nwtis.ljakopov.web.zrna;
 
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonReader;
 import org.foi.nwtis.ljakopov.ws.klijenti.MeteoWSKlijent;
-import org.foi.nwtis.ljakopov.ws.serveri.Uredjaj;
+import org.foi.nwtis.ljakopov.ws.serveri.Lokacija;
 
 /**
  *
- * @author ljakopov
+ * @author Lovro
  */
 @Named(value = "odabirUredjaja")
 @RequestScoped
 public class OdabirUredjaja {
-    
+
     private List<Uredjaj> uredjaji;
-    private String id;
+    
+      
+    private int id;
 
     /**
      * Creates a new instance of OdabirUredjaja
@@ -29,7 +36,30 @@ public class OdabirUredjaja {
     }
 
     public List<Uredjaj> getUredjaji() {
-        uredjaji = MeteoWSKlijent.dajSveUredjaje();
+        JsonReader jsonReader = Json.createReader(new StringReader(MeteoWSKlijent.dajSveUredjaje()));
+        JsonArray array = jsonReader.readArray();
+        ArrayList<Uredjaj> u = new ArrayList<>();
+        for(int i=0;i<array.size();i++){
+            Lokacija lokacija= new Lokacija();
+            u.add(new Uredjaj(array.getJsonObject(i).getInt("uid"), array.getJsonObject(i).getString("naziv"), lokacija));
+        }
+        /*
+        for (JsonValue aa : array) {
+            JsonReader reader = Json.createReader(new StringReader(aa.toString()));
+            JsonObject jo = reader.readObject();
+            Lokacija lokacija = new Lokacija();
+            
+            System.out.println("OVO JE JSON NAZIV: " + jo.getString("naziv") + " ID: " + jo.getInt("uid"));
+            System.out.println("OVO JE JSON LAT: " + jo.getString("lat") + " LON: " + jo.getString("lon"));
+        */
+            /*
+            Lokacija lokacija = new Lokacija("kppo", "ijjojo");
+            Uredjaj uredjaj = new Uredjaj(1, "mmkmkm", lokacija);
+             
+            u.add(new Uredjaj(jo.getInt("uid"), jo.getString("naziv"), lokacija));
+        }
+*/
+        uredjaji=u;
         return uredjaji;
     }
 
@@ -37,14 +67,12 @@ public class OdabirUredjaja {
         this.uredjaji = uredjaji;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
-    
-    
-    
+
 }

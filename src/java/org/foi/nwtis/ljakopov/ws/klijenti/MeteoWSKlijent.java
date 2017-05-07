@@ -7,14 +7,16 @@ package org.foi.nwtis.ljakopov.ws.klijenti;
 
 /**
  *
- * @author ljakopov
+ * @author Lovro
  */
 public class MeteoWSKlijent {
 
-    public static java.util.List<org.foi.nwtis.ljakopov.ws.serveri.Uredjaj> dajSveUredjaje() {
+    public static String dajSveUredjaje() {
         org.foi.nwtis.ljakopov.ws.serveri.GeoMeteoWS_Service service = new org.foi.nwtis.ljakopov.ws.serveri.GeoMeteoWS_Service();
         org.foi.nwtis.ljakopov.ws.serveri.GeoMeteoWS port = service.getGeoMeteoWSPort();
         return port.dajSveUredjaje();
     }
-
+    
+    
+    
 }
