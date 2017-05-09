@@ -2,19 +2,110 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"></link>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <title>Odabir uređaja</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:selectManyListbox value="#{odabirUredjaja.id}" size="5">
-                <f:selectItems value="#{odabirUredjaja.uredjaji}"
-                               var="uredaj" 
-                               itemLabel="#{uredaj.naziv}"
-                               itemValue="#{uredaj.id}" />
-            </h:selectManyListbox>
-        </h:form>
+        <div class="container">
+            <h1>Odabir uređaja</h1>
+            <br/>
+            <h:form>
+                <div class="row">
+                    <div class="col">
+                        <h:outputLabel value="Naziv i adresa: "/>
+                        <h:inputText value="#{odabirUredjaja.naziv}"/>
+                    </div>
+                    <div class="col">
+                        <h:inputText value="#{odabirUredjaja.adresa}"/>
+                    </div>
+                    <div class="col">
+                        <h:commandButton value="Upiši SOAP" action="#{odabirUredjaja.dodajSoap()}" class="btn btn-success"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                        <h:commandButton value="Upiši REST" action="#{odabirUredjaja.dodajRest()}" class="btn btn-warning"/>
+                    </div>
+                    <br/>
+                </div>
+            </h:form>
+            <br/>
+            <h:form>
+                <div class="row">
+                    <div class="col-4">
+                        <h:selectManyListbox value="#{odabirUredjaja.id}" size="5">
+                            <f:selectItems value="#{odabirUredjaja.uredjaji}"
+                                           var="uredaj" 
+                                           itemLabel="#{uredaj.naziv}"
+                                           itemValue="#{uredaj.id}" />
+                        </h:selectManyListbox>
+                    </div>
+                    <div class="col-6">
+                        <p:outputLabel for="datetime" value="Od:" />
+                        <p:calendar id="datetime" value="#{odabirUredjaja.vrijeme_od}"  pattern="MM/dd/yyyy HH:mm:ss"/>
+
+                        <p:outputLabel for="datetime" value="Do:" />
+                        <p:calendar id="datetime1" pattern="MM-dd-yyyy HH:mm:ss" value="#{odabirUredjaja.vrijeme_do}"/>
+
+                        <h:commandButton value="Preuzmi SOAP" action="#{odabirUredjaja.preuzmiPodatkeSoap()}" class="btn btn-info"/>
+                        <h:commandButton value="Preuzmi REST" action="#{odabirUredjaja.preuzmiPodatkeRest()}" class="btn btn-warning"/>
+
+                    </div>
+                </div>
+                <h:dataTable value="#{odabirUredjaja.listaMeteoPodaci}" var="p" class="table table-striped">
+                    <h:column>
+                        <f:facet name="header">Weather Icon</f:facet>
+                        <h:outputText value="#{p.weatherIcon}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Vrijeme opis</f:facet>
+                        <h:outputText value="#{p.weatherValue}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Temperatura</f:facet>
+                        <h:outputText value="#{p.temperatureValue}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Temperatura min</f:facet>
+
+                        <h:outputText value="#{p.temperatureMin}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Temperatura max</f:facet>
+                        <h:outputText value="#{p.temperatureMax}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Vlažnost</f:facet>
+                        <h:outputText value="#{p.humidityValue}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tlak</f:facet>
+                        <h:outputText value="#{p.pressureValue}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Brzina vjetra</f:facet>
+                        <h:outputText value="#{p.windSpeedValue}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Smjer vjetar vrijednost</f:facet>
+                        <h:outputText value="#{p.windDirectionValue}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Dodano</f:facet>
+                        <h:outputText value="#{p.lastUpdate}" />
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
     </h:body>
 </html>
-

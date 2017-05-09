@@ -10,7 +10,7 @@ import org.foi.nwtis.ljakopov.ws.serveri.Lokacija;
 
 /**
  *
- * @author ljakopov
+ * @author ljakopov. klasa nam olakšava dohvaćanje atributa objekta lokacija
  */
 public class Uredjaj {
     private int id;
